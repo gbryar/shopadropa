@@ -1,0 +1,8 @@
+Instructions to run this application
+
+1. Clone this repository
+2. Create Postgresql database using the DB_CREATE script found at the root level
+3. Change username / password for your local postgresql installation
+4. Start the server (npm start) from within the books-backend folder
+5. Start the client (npm start) from within the books-frontend folder
+6. Open browser to http://localhost:3000 (server is running on port 4000)
