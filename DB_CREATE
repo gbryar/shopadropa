@@ -1,0 +1,40 @@
+-- Database: shopadropa
+
+-- DROP DATABASE IF EXISTS shopadropa;
+
+CREATE DATABASE shopadropa
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+	
+	
+  
+  
+  
+  
+  
+	
+-- Table: public.books
+
+-- DROP TABLE IF EXISTS public.books;
+
+CREATE TABLE IF NOT EXISTS public.books
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying(64) COLLATE pg_catalog."default",
+    author character varying(32) COLLATE pg_catalog."default",
+    publishing_year integer,
+    isbn character varying(20) COLLATE pg_catalog."default",
+    image bytea,
+    CONSTRAINT "Books_pkey" PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.books
+    OWNER to postgres;
+	
