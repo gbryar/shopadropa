@@ -5,9 +5,13 @@ var router = express.Router();
 /* GET book by id */
 router.get('/:id', async (req, res, next) => {
   try {
-    const { id } = req.params;
-    var book = await pool.query('SELECT * FROM books WHERE id = $1', [id]);
-    res.json(book.rows[0]);
+    const result = await pool.query('SELECT * FROM books WHERE id = $1', [req.params.id]);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        book: result.rows[0]
+      }
+    });
   }
   catch (expection) {
     console.error(expection);
@@ -17,8 +21,14 @@ router.get('/:id', async (req, res, next) => {
 /* GET all books */
 router.get('/', async (req, res, next) => {
   try {
-    var allBooks = await pool.query('SELECT * FROM books');
-    res.json(allBooks.rows);
+    const result = await pool.query('SELECT * FROM books');
+    res.status(200).json({
+      status: 'success',
+      results: result.rows.length,
+      data: {
+        books: result.rows
+      }
+    });
   }
   catch (expection) {
     console.error(expection);
@@ -28,15 +38,15 @@ router.get('/', async (req, res, next) => {
 /* POST create new book */
 router.post('/', async (req, res, next) => {
   try {
-    const { name } = req.body;
-    const { author } = req.body;
-    const { publishing_year } = req.body;
-    const { isbn } = req.body;
-    
-    var newBook = await pool.query('INSERT INTO books (name, author, publishing_year, isbn) VALUES($1, $2, $3, $4) RETURNING *', 
-      [name, author, publishing_year, isbn]
+    const result = await pool.query('INSERT INTO books (name, author, publishing_year, isbn) VALUES($1, $2, $3, $4) RETURNING *', 
+      [req.body.name, req.body.author, parseInt(req.body.publishing_year) || 0, req.body.isbn]
     );
-    res.json(newBook.rows[0]);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        book: result.rows[0]
+      }
+    });
   }
   catch (exception) {
     console.error(exception);
@@ -45,17 +55,16 @@ router.post('/', async (req, res, next) => {
 
 /* PUT update book */
 router.put('/:id', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { name } = req.body;
-    const { author } = req.body;
-    const { publishing_year } = req.body;
-    const { isbn } = req.body;
-    
-    var updatedBook = await pool.query('UPDATE books SET name=$1, author=$2, publishing_year=$3, isbn=$4 WHERE id=$5', 
-      [name, author, publishing_year, isbn, id]
+  try {    
+    const result = await pool.query('UPDATE books SET name=$1, author=$2, publishing_year=$3, isbn=$4 WHERE id=$5 RETURNING *', 
+      [req.body.name, req.body.author, parseInt(req.body.publishing_year) || 0, req.body.isbn, req.params.id]
     );
-    res.json('Book updated!');
+    res.status(200).json({
+      status: 'success',
+      data: {
+        book: result.rows[0]
+      }
+    });
   }
   catch (exception) {
     console.error(exception);
@@ -65,9 +74,11 @@ router.put('/:id', async (req, res, next) => {
 /* DELETE book by id */
 router.delete('/:id', async (req, res, next) => {
   try {
-    const { id } = req.params;
-    var deletedBook = await pool.query('DELETE FROM books WHERE id = $1', [id]);
-    res.json('Book deleted!');
+    console.log('api server delete');
+    var deletedBook = await pool.query('DELETE FROM books WHERE id = $1', [req.params.id]);
+    res.status(204).json({
+      status: 'success'
+    });
   }
   catch (expection) {
     console.error(expection);
