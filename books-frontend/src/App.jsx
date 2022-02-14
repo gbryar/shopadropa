@@ -6,7 +6,7 @@ import { BookStoreContextProvider } from './context/BookStoreContext';
 import HomeView from './views/HomeView';
 import BookAddView from './views/BookAddView';
 import BookUpdateView from './views/BookUpdateView';
-import BookDetailView from './views/BookDetailView';
+import NotFoundView from './views/NotFoundView';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
               <Route path='/' element={<HomeView />} />
               <Route path='/Books/add/' element={<BookAddView />} />
               <Route path='/Books/update/:id' element={<BookUpdateView />} />
-              <Route path='/Books/:id' element={<BookDetailView />} />
+              <Route path='/*' element={<NotFoundView />} />
             </Routes>
           </Router>
         </div>

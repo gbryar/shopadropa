@@ -58,6 +58,7 @@ export const UpdateBookForm = () => {
 
             <br />
             <button type="submit" className="btn btn-success">Save</button>
+            <button className="btn btn-primary m-2" onClick={() => navHist('/')}>Cancel</button>
           </form>
       </Fragment>
   )
